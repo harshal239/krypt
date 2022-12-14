@@ -18,15 +18,17 @@ const getEthereumContract = () => {
   return transactionsContract;
 };
 
+const initialState = {
+  addressTo: "",
+  amount: "",
+  keyword: "",
+  message: "",
+};
+
 export const TransactionProvider = ({ children }) => {
   const [connectedAccount, setConnectedAccount] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    addressTo: "",
-    amount: "",
-    keyword: "",
-    message: "",
-  });
+  const [formData, setFormData] = useState(initialState);
   const [transactions, setTransactions] = useState([]);
   const [transactionCount, setTransactionCount] = useState(
     localStorage.getItem("transactionCount")
@@ -34,6 +36,9 @@ export const TransactionProvider = ({ children }) => {
 
   const handleChange = (e, name) => {
     setFormData((prevState) => ({ ...prevState, [name]: e.target.value }));
+  };
+  const resetFormData = () => {
+    setFormData(initialState);
   };
 
   const getAllTransactions = async () => {
@@ -54,7 +59,7 @@ export const TransactionProvider = ({ children }) => {
           ).toLocaleString(),
           message: transaction.message,
           keyword: transaction.keyword,
-          ammount: parseInt(transaction.amount._hex) / 10 ** 18,
+          amount: parseInt(transaction.amount._hex) / 10 ** 18,
         })
       );
       setTransactions(structuredTransactions);
@@ -165,6 +170,7 @@ export const TransactionProvider = ({ children }) => {
         formData,
         sendTransaction,
         handleChange,
+        resetFormData,
         transactions,
         isLoading,
       }}

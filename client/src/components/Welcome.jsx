@@ -29,6 +29,7 @@ const Welcome = () => {
     formData,
     sendTransaction,
     handleChange,
+    resetFormData,
     isLoading,
   } = useContext(TransactionContext);
 
@@ -39,6 +40,7 @@ const Welcome = () => {
     if (!addressTo || !amount || !keyword || !message) {
       return;
     }
+    resetFormData();
     sendTransaction();
   };
 
